@@ -18,10 +18,10 @@ enum e_ConnectionState : uint8_t
 	CONNECTION_STATE_GAMESTART
 };
 
-class SocketManager;
-class TcpSocket
+class TcpSocketManager;
+class TcpSocket : public std::enable_shared_from_this<TcpSocket>
 {
-	friend class SocketManager;
+	friend class TcpSocketManager;
 
 protected:
 	using RawSocket_t                             = asio::ip::tcp::socket;
@@ -49,8 +49,18 @@ public:
 		return _state;
 	}
 
+	bool HasSocket() const
+	{
+		return _socket != nullptr;
+	}
+
+	TcpSocketManager* GetManager()
+	{
+		return _socketManager;
+	}
+
 	TcpSocket(test_tag);
-	TcpSocket(SocketManager* socketManager);
+	TcpSocket(TcpSocketManager* socketManager);
 
 	virtual ~TcpSocket()
 	{
@@ -61,23 +71,25 @@ public:
 protected:
 	int QueueAndSend(char* buffer, int length);
 	virtual bool PullOutCore(char*& data, int& length) = 0;
-	virtual void ReleaseToManager()                    = 0;
 
 private:
+	virtual std::string_view GetImplName() const = 0;
 	bool AsyncSend(bool fromAsyncChain);
+	void AbortSend();
 
 public:
 	void AsyncReceive();
 	void ReceivedData(int length);
-	virtual void Close() = 0;
+	void Close();
 	virtual void CloseProcess();
 	void InitSocket();
 	virtual void Parsing(int length, char* pData) = 0;
 	virtual void Initialize();
 	const std::string& GetRemoteIP();
+	void SetSocket(RawSocket_t&& rawSocket);
 
 protected:
-	SocketManager* _socketManager        = nullptr;
+	TcpSocketManager* _socketManager     = nullptr;
 	std::unique_ptr<RawSocket_t> _socket = nullptr;
 
 	int _recvBufferSize                  = 0;

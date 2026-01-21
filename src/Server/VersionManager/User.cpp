@@ -13,8 +13,13 @@ CUser::CUser(test_tag tag) : TcpServerSocket(tag)
 {
 }
 
-CUser::CUser(SocketManager* socketManager) : TcpServerSocket(socketManager)
+CUser::CUser(TcpServerSocketManager* socketManager) : TcpServerSocket(socketManager)
 {
+}
+
+std::string_view CUser::GetImplName() const
+{
+	return "User";
 }
 
 bool CUser::PullOutCore(char*& data, int& length)

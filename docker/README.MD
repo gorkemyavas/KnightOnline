@@ -1,6 +1,21 @@
 # OpenKO Docker Scripts
 ### ⚠️⚠️ **DO NOT use this to run a database for a public server - do a manual installation instead.** ⚠️⚠️
 
+## What's Included
+
+This Docker setup provides a complete development environment for OpenKO:
+
+1. **Database Services**:
+   - SQL Server 2022
+   - Database initialization and management utilities
+
+2. **Game Server Services**:
+   - AIServer - Handles AI logic for NPCs
+   - Aujard - Authentication and account management
+   - Ebenezer - Main game server
+   - ItemManager - Item management
+   - VersionManager - Version management and updates
+
 ## Docker Requirements
 You must install Docker yourself and ensure it is available on the command line (try `docker version` in a terminal.)
 
@@ -24,13 +39,96 @@ Absent a local port conflict there should be no need to change default config. I
 to just use the defaults.
 
 ## Scripts in this folder
-This folder contains several helper scripts to help you create and manage a copy of the OpenKO database using Docker. Depending on your platform, you would want to use the script that ends in `.sh` for linux-based systems, and `.cmd` for Windows.
+
+This folder contains several helper scripts to help you create and manage OpenKO services using Docker.
+
+**Script Formats:**
+- `.sh` - For Linux/macOS (Bash shell scripts)
+- `.cmd` - For Windows Command Prompt (Batch files)
+- `.ps1` - For Windows PowerShell (Recommended for Windows - better error handling and colored output)
+
+### Complete Environment Scripts
+
+* `start_all`: Complete setup that starts database AND all game servers. Best for quick start!
+* `stop_all`: Stops all services (database and game servers).
+
+### Database-Only Scripts (Legacy)
 
 * `clean_setup`: Use this for a first-time setup. Removes any existing sqlserver/kodb-util images/volumes, then creates/starts new versions of them. Before the script completes, the script to create an up-to-date OpenKO database will be invoked.
 * `reset_database`: Performs a clean import of the OpenKO database.  This will remove any existing OpenKO database instance matching the DB_NAME from the .env file (default: KN_online), then create a replacement database with the latest data from the OpenKO-db project.
-* `stop_containers`: Stops the sqlserver and kodb-util services. 
-* `resume_containers`: Resumes the sqlserver and kodb-util services.
+* `stop_containers`: Stops only the database services (sqlserver and kodb-util). 
+* `resume_containers`: Resumes only the database services (sqlserver and kodb-util).
 * `uninstall`: Removes all sqlserver and kodb-util containers, images, and volumes.
+
+## Quick Start
+
+For a complete guide, see:
+- [Turkish Docker Setup Guide (DOCKER-KURULUM.md)](../DOCKER-KURULUM.md)
+- [English Docker Setup Guide (DOCKER-SETUP.md)](../DOCKER-SETUP.md)
+
+### Start Everything
+
+**Linux/macOS:**
+```bash
+cd docker
+./start_all.sh
+```
+
+**Windows PowerShell (Recommended):**
+```powershell
+cd docker
+.\start_all.ps1
+```
+
+**Windows Command Prompt:**
+```cmd
+cd docker
+start_all.cmd
+```
+
+> **For Windows users**: PowerShell scripts (`.ps1`) provide better error handling and colored output. On first run, you may need to allow script execution:
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
+
+This will:
+1. Build and start SQL Server
+2. Initialize the database
+3. Build and start all game servers
+
+### Stop Everything
+
+**Linux/macOS:**
+```bash
+cd docker
+./stop_all.sh
+```
+
+**Windows PowerShell:**
+```powershell
+cd docker
+.\stop_all.ps1
+```
+
+**Windows Command Prompt:**
+```cmd
+cd docker
+stop_all.cmd
+```
+
+## What Services Are Running?
+
+Check service status:
+```bash
+docker compose ps
+```
+
+View logs:
+```bash
+docker compose logs -f
+# Or for a specific service:
+docker compose logs -f ebenezer
+```
 
 Most IDEs will allow you to right click and run these scripts from a context menu; otherwise call them from your terminal
 application.  Linux users may need to run `chmod +x *.sh` in the `KnightOnline/docker` folder to make the scripts executable.

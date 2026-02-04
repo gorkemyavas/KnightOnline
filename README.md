@@ -10,6 +10,27 @@ We started this project to learn more about how the MMORPG Knight Online works. 
 
 If you have questions, or would like help getting started, feel free visit [our Discord](https://discord.gg/Uy73SMMjWS).
 
+### Docker Setup (Recommended for Quick Start)
+
+🐳 **The fastest way to get started with OpenKO servers!**
+
+For a complete Docker-based setup that includes the database and all game servers:
+* [🚀 Quick Reference (DOCKER-QUICKREF.md)](DOCKER-QUICKREF.md) - **Start here!**
+* [🇹🇷 Turkish Docker Setup Guide (DOCKER-KURULUM.md)](DOCKER-KURULUM.md)
+* [🇬🇧 English Docker Setup Guide (DOCKER-SETUP.md)](DOCKER-SETUP.md)
+
+**Quick start:**
+```bash
+cd docker
+./start_all.sh      # Linux/macOS
+.\start_all.ps1     # Windows PowerShell (Recommended)
+start_all.cmd       # Windows Command Prompt
+```
+
+This will build and run all server components (AIServer, Aujard, Ebenezer, ItemManager, VersionManager) along with the SQL Server database in Docker containers.
+
+> ⚠️ **Note**: Docker setup is for local development only. Do not use for production servers.
+
 ### Project Setup
 
 Currently, OpenKO supports 2 separate sets of builds:

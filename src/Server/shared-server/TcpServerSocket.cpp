@@ -54,6 +54,7 @@ void TcpServerSocket::Initialize()
 	}
 
 	// Configure receive buffer size
+	// Uses 4x multiplier to match TcpClientSocket and acceptor configuration
 	_socket->set_option(asio::socket_base::receive_buffer_size(_recvBufferSize * 4), ec);
 	if (ec)
 	{
@@ -63,6 +64,7 @@ void TcpServerSocket::Initialize()
 	}
 
 	// Configure send buffer size
+	// Uses 4x multiplier to match TcpClientSocket and acceptor configuration
 	_socket->set_option(asio::socket_base::send_buffer_size(_sendBufferSize * 4), ec);
 	if (ec)
 	{

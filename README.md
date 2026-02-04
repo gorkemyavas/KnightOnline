@@ -15,6 +15,7 @@ If you have questions, or would like help getting started, feel free visit [our 
 🐳 **The fastest way to get started with OpenKO servers!**
 
 For a complete Docker-based setup that includes the database and all game servers:
+* [🚀 Quick Reference (DOCKER-QUICKREF.md)](DOCKER-QUICKREF.md) - **Start here!**
 * [🇹🇷 Turkish Docker Setup Guide (DOCKER-KURULUM.md)](DOCKER-KURULUM.md)
 * [🇬🇧 English Docker Setup Guide (DOCKER-SETUP.md)](DOCKER-SETUP.md)
 

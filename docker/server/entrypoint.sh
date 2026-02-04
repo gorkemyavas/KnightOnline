@@ -35,6 +35,15 @@ if [ ! -z "${GAME_DB_PASS}" ]; then
     sed -i "s/GAME_PWD=.*/GAME_PWD=${GAME_DB_PASS}/" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null || true
 fi
 
+# Update AI_SERVER IP configuration (for Ebenezer)
+# Default to 'aiserver' hostname for Docker networking
+if [ ! -z "${AI_SERVER_IP}" ]; then
+    sed -i "s/^IP=.*/IP=${AI_SERVER_IP}/" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null || true
+elif grep -q "\[AI_SERVER\]" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null; then
+    # Ensure IP is set to aiserver if not already configured
+    sed -i "/\[AI_SERVER\]/,/^\[/ s/^IP=.*/IP=aiserver/" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null || true
+fi
+
 echo "Starting ${SERVER_NAME}..."
 cd "${BIN_DIR}"
 

@@ -159,6 +159,8 @@ services:
     env_file:
       - path: .env
         required: false
+    environment:
+      - AI_SERVER_IP=${AI_SERVER_IP:-aiserver}
     volumes:
       - server_config:/app/config
     command: ["Ebenezer", "Ebenezer.ini"]

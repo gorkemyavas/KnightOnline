@@ -84,7 +84,8 @@ COPY docker/server/*.ini /app/config/
 
 # Copy entrypoint script
 COPY docker/server/entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh && \
+    sed -i 's/\r$//' /app/entrypoint.sh
 
 # Configure ODBC for SQL Server connection
 RUN echo "[KN_online]" > /etc/odbc.ini && \

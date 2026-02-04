@@ -40,12 +40,17 @@ to just use the defaults.
 
 ## Scripts in this folder
 
-This folder contains several helper scripts to help you create and manage OpenKO services using Docker. Depending on your platform, use scripts ending in `.sh` for Linux/macOS, and `.cmd` for Windows.
+This folder contains several helper scripts to help you create and manage OpenKO services using Docker.
+
+**Script Formats:**
+- `.sh` - For Linux/macOS (Bash shell scripts)
+- `.cmd` - For Windows Command Prompt (Batch files)
+- `.ps1` - For Windows PowerShell (Recommended for Windows - better error handling and colored output)
 
 ### Complete Environment Scripts
 
-* `start_all`: **[NEW]** Complete setup that starts database AND all game servers. Best for quick start!
-* `stop_all`: **[NEW]** Stops all services (database and game servers).
+* `start_all`: Complete setup that starts database AND all game servers. Best for quick start!
+* `stop_all`: Stops all services (database and game servers).
 
 ### Database-Only Scripts (Legacy)
 
@@ -63,11 +68,28 @@ For a complete guide, see:
 
 ### Start Everything
 
+**Linux/macOS:**
 ```bash
 cd docker
-./start_all.sh  # Linux/macOS
-start_all.cmd   # Windows
+./start_all.sh
 ```
+
+**Windows PowerShell (Recommended):**
+```powershell
+cd docker
+.\start_all.ps1
+```
+
+**Windows Command Prompt:**
+```cmd
+cd docker
+start_all.cmd
+```
+
+> **For Windows users**: PowerShell scripts (`.ps1`) provide better error handling and colored output. On first run, you may need to allow script execution:
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
 
 This will:
 1. Build and start SQL Server
@@ -76,10 +98,22 @@ This will:
 
 ### Stop Everything
 
+**Linux/macOS:**
 ```bash
 cd docker
-./stop_all.sh  # Linux/macOS
-stop_all.cmd   # Windows
+./stop_all.sh
+```
+
+**Windows PowerShell:**
+```powershell
+cd docker
+.\stop_all.ps1
+```
+
+**Windows Command Prompt:**
+```cmd
+cd docker
+stop_all.cmd
 ```
 
 ## What Services Are Running?

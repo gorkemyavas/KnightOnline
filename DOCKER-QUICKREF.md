@@ -5,16 +5,33 @@
 ### Start Everything / Her Şeyi Başlat
 ```bash
 cd docker
-./start_all.sh    # Linux/macOS
-start_all.cmd     # Windows
+
+# Linux/macOS
+./start_all.sh
+
+# Windows PowerShell (Önerilen/Recommended)
+.\start_all.ps1
+
+# Windows Command Prompt
+start_all.cmd
 ```
 
 ### Stop Everything / Her Şeyi Durdur
 ```bash
 cd docker
-./stop_all.sh     # Linux/macOS
-stop_all.cmd      # Windows
+
+# Linux/macOS
+./stop_all.sh
+
+# Windows PowerShell (Önerilen/Recommended)
+.\stop_all.ps1
+
+# Windows Command Prompt
+stop_all.cmd
 ```
+
+> **Windows Kullanıcıları / Windows Users**: PowerShell script'leri (.ps1) daha iyi hata yönetimi ve renkli çıktı sağlar. İlk kullanımda execution policy ayarlamanız gerekebilir.
+> PowerShell scripts (.ps1) provide better error handling and colored output. You may need to set execution policy on first use.
 
 ## 📋 Common Commands / Sık Kullanılan Komutlar
 
@@ -45,8 +62,15 @@ docker compose exec ebenezer bash
 ### Reset Database / Veritabanını Sıfırla
 ```bash
 cd docker
-./reset_database.sh    # Linux/macOS
-reset_database.cmd     # Windows
+
+# Linux/macOS
+./reset_database.sh
+
+# Windows PowerShell
+.\reset_database.ps1
+
+# Windows Command Prompt
+reset_database.cmd
 ```
 
 ## 🔧 Services / Servisler

@@ -51,12 +51,24 @@ cd docker
 ./start_all.sh
 ```
 
-#### Windows:
+#### Windows (PowerShell - Recommended):
+
+```powershell
+cd docker
+.\start_all.ps1
+```
+
+#### Windows (Command Prompt):
 
 ```cmd
 cd docker
 start_all.cmd
 ```
+
+> **Note**: PowerShell scripts provide better error handling and colored output. If you get an execution policy warning on first run, open PowerShell as administrator and run:
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
 
 This script will:
 1. Start the SQL Server database
@@ -141,16 +153,25 @@ Edit these files to customize server behavior.
 
 ### Stop Services
 
+**Linux/macOS:**
 ```bash
 cd docker
-# Linux/macOS:
 ./stop_all.sh
+```
 
-# Windows:
+**Windows (PowerShell):**
+```powershell
+cd docker
+.\stop_all.ps1
+```
+
+**Windows (Command Prompt):**
+```cmd
+cd docker
 stop_all.cmd
 ```
 
-Or:
+**Or directly with Docker Compose:**
 
 ```bash
 docker compose down
@@ -172,15 +193,19 @@ docker compose restart ebenezer
 
 To clean and reload the database:
 
-#### Linux/macOS:
-
+**Linux/macOS:**
 ```bash
 cd docker
 ./reset_database.sh
 ```
 
-#### Windows:
+**Windows (PowerShell):**
+```powershell
+cd docker
+.\reset_database.ps1
+```
 
+**Windows (Command Prompt):**
 ```cmd
 cd docker
 reset_database.cmd

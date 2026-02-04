@@ -51,12 +51,24 @@ cd docker
 ./start_all.sh
 ```
 
-#### Windows:
+#### Windows (PowerShell - Önerilen):
+
+```powershell
+cd docker
+.\start_all.ps1
+```
+
+#### Windows (Command Prompt):
 
 ```cmd
 cd docker
 start_all.cmd
 ```
+
+> **Not**: PowerShell script'leri daha iyi hata yönetimi ve renkli çıktı sunar. İlk çalıştırmada PowerShell execution policy uyarısı alırsanız, PowerShell'i yönetici olarak açıp şu komutu çalıştırın:
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
 
 Bu script şunları yapar:
 1. SQL Server veritabanını başlatır
@@ -141,17 +153,25 @@ Bu dosyaları düzenleyerek sunucu davranışlarını özelleştirebilirsiniz.
 
 ### Servisleri Durdurma
 
+**Linux/macOS:**
 ```bash
 cd docker
-# Linux/macOS:
 ./stop_all.sh
+```
 
-# Windows:
+**Windows (PowerShell):**
+```powershell
+cd docker
+.\stop_all.ps1
+```
+
+**Windows (Command Prompt):**
+```cmd
+cd docker
 stop_all.cmd
 ```
 
-Veya:
-
+**Veya doğrudan Docker Compose:**
 ```bash
 docker compose down
 ```
@@ -172,15 +192,19 @@ docker compose restart ebenezer
 
 Veritabanını temiz hale getirmek ve yeniden yüklemek için:
 
-#### Linux/macOS:
-
+**Linux/macOS:**
 ```bash
 cd docker
 ./reset_database.sh
 ```
 
-#### Windows:
+**Windows (PowerShell):**
+```powershell
+cd docker
+.\reset_database.ps1
+```
 
+**Windows (Command Prompt):**
 ```cmd
 cd docker
 reset_database.cmd

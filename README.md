@@ -22,8 +22,9 @@ For a complete Docker-based setup that includes the database and all game server
 **Quick start:**
 ```bash
 cd docker
-./start_all.sh  # Linux/macOS
-start_all.cmd   # Windows
+./start_all.sh      # Linux/macOS
+.\start_all.ps1     # Windows PowerShell (Recommended)
+start_all.cmd       # Windows Command Prompt
 ```
 
 This will build and run all server components (AIServer, Aujard, Ebenezer, ItemManager, VersionManager) along with the SQL Server database in Docker containers.

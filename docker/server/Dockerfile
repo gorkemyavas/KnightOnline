@@ -68,6 +68,7 @@ RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | \
 # Create application directory
 WORKDIR /app
 
+
 # Copy built binaries from builder
 COPY --from=builder /build/build/bin/Release/AIServer /app/bin/AIServer
 COPY --from=builder /build/build/bin/Release/Aujard /app/bin/Aujard

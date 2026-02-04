@@ -3,6 +3,7 @@ volumes:
   sqlserver_data:
   sqlserver_scripts:
   kodb_util_data:
+  server_config:
 
 # shared container network
 networks:
@@ -83,3 +84,139 @@ services:
         required: false
     volumes:
       - kodb_util_data:/var/lib/app
+
+  # AI Server - Handles AI logic for NPCs
+  aiserver:
+    build:
+      context: .
+      dockerfile: docker/server/Dockerfile
+    x-buildkit: true
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      kodb-util:
+        condition: service_started
+    networks:
+      - backend
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - server_config:/app/config
+    command: ["AIServer", "AIServer.ini"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f AIServer || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Aujard - Authentication and account management server
+  aujard:
+    build:
+      context: .
+      dockerfile: docker/server/Dockerfile
+    x-buildkit: true
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      kodb-util:
+        condition: service_started
+    networks:
+      - backend
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - server_config:/app/config
+    command: ["Aujard", "Aujard.ini"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f Aujard || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Ebenezer - Main game server
+  ebenezer:
+    build:
+      context: .
+      dockerfile: docker/server/Dockerfile
+    x-buildkit: true
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      kodb-util:
+        condition: service_started
+      aiserver:
+        condition: service_started
+      aujard:
+        condition: service_started
+    networks:
+      - backend
+    ports:
+      - "${EBENEZER_PORT:-15100}:15100"
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - server_config:/app/config
+    command: ["Ebenezer", "Ebenezer.ini"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f Ebenezer || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ItemManager - Handles item management
+  itemmanager:
+    build:
+      context: .
+      dockerfile: docker/server/Dockerfile
+    x-buildkit: true
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      kodb-util:
+        condition: service_started
+    networks:
+      - backend
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - server_config:/app/config
+    command: ["ItemManager"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f ItemManager || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # VersionManager - Handles version management and updates
+  versionmanager:
+    build:
+      context: .
+      dockerfile: docker/server/Dockerfile
+    x-buildkit: true
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      kodb-util:
+        condition: service_started
+    networks:
+      - backend
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - server_config:/app/config
+    command: ["VersionManager", "VersionManager.ini"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f VersionManager || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3

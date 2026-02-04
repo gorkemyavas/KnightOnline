@@ -12,6 +12,8 @@ public:
 	TcpServerSocket(test_tag);
 	TcpServerSocket(TcpServerSocketManager* socketManager);
 
+	void Initialize() override;
+
 private:
 	std::string_view GetImplName() const override;
 };

@@ -38,5 +38,6 @@ fi
 echo "Starting ${SERVER_NAME}..."
 cd "${BIN_DIR}"
 
-# Execute the server with any additional arguments
-exec "./${SERVER_NAME}" "$@"
+# Execute the server without passing positional arguments
+# Servers expect zero positional arguments and read config from current directory
+exec "./${SERVER_NAME}"

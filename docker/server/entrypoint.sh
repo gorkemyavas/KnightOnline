@@ -37,11 +37,20 @@ fi
 
 # Update AI_SERVER IP configuration (for Ebenezer)
 # Default to 'aiserver' hostname for Docker networking
-if [ ! -z "${AI_SERVER_IP}" ]; then
-    sed -i "s/^IP=.*/IP=${AI_SERVER_IP}/" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null || true
-elif grep -q "\[AI_SERVER\]" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null; then
-    # Ensure IP is set to aiserver if not already configured
-    sed -i "/\[AI_SERVER\]/,/^\[/ s/^IP=.*/IP=aiserver/" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null || true
+# This runs EVERY startup to ensure config is correct, even if volume persists
+if grep -q "\[AI_SERVER\]" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null; then
+    # Set AI_SERVER_IP, defaulting to 'aiserver' if not set
+    AI_SERVER_TARGET="${AI_SERVER_IP:-aiserver}"
+    echo "Updating AI_SERVER IP to: ${AI_SERVER_TARGET}"
+    
+    # Use awk for more reliable section-specific replacement
+    awk -v ip="${AI_SERVER_TARGET}" '
+        /^\[AI_SERVER\]/ { in_section=1; print; next }
+        /^\[/ && in_section { in_section=0 }
+        in_section && /^IP=/ { print "IP=" ip; next }
+        { print }
+    ' "${BIN_DIR}/${CONFIG_FILE}" > "${BIN_DIR}/${CONFIG_FILE}.tmp" && \
+    mv "${BIN_DIR}/${CONFIG_FILE}.tmp" "${BIN_DIR}/${CONFIG_FILE}"
 fi
 
 echo "Starting ${SERVER_NAME}..."

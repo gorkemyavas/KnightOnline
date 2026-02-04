@@ -101,6 +101,10 @@ services:
     env_file:
       - path: .env
         required: false
+    environment:
+      - GAME_DB_NAME=${GAME_DB_NAME:-KN_online}
+      - GAME_DB_USER=${GAME_DB_USER:-knight}
+      - GAME_DB_PASS=${GAME_DB_PASS:-knight}
     volumes:
       - server_config:/app/config
     command: ["AIServer", "AIServer.ini"]
@@ -127,6 +131,10 @@ services:
     env_file:
       - path: .env
         required: false
+    environment:
+      - GAME_DB_NAME=${GAME_DB_NAME:-KN_online}
+      - GAME_DB_USER=${GAME_DB_USER:-knight}
+      - GAME_DB_PASS=${GAME_DB_PASS:-knight}
     volumes:
       - server_config:/app/config
     command: ["Aujard", "Aujard.ini"]
@@ -161,6 +169,9 @@ services:
         required: false
     environment:
       - AI_SERVER_IP=${AI_SERVER_IP:-aiserver}
+      - GAME_DB_NAME=${GAME_DB_NAME:-KN_online}
+      - GAME_DB_USER=${GAME_DB_USER:-knight}
+      - GAME_DB_PASS=${GAME_DB_PASS:-knight}
     volumes:
       - server_config:/app/config
     command: ["Ebenezer", "Ebenezer.ini"]
@@ -187,6 +198,10 @@ services:
     env_file:
       - path: .env
         required: false
+    environment:
+      - GAME_DB_NAME=${GAME_DB_NAME:-KN_online}
+      - GAME_DB_USER=${GAME_DB_USER:-knight}
+      - GAME_DB_PASS=${GAME_DB_PASS:-knight}
     volumes:
       - server_config:/app/config
     command: ["ItemManager"]
@@ -213,6 +228,10 @@ services:
     env_file:
       - path: .env
         required: false
+    environment:
+      - GAME_DB_NAME=${GAME_DB_NAME:-KN_online}
+      - GAME_DB_USER=${GAME_DB_USER:-knight}
+      - GAME_DB_PASS=${GAME_DB_PASS:-knight}
     volumes:
       - server_config:/app/config
     command: ["VersionManager", "VersionManager.ini"]

@@ -5955,7 +5955,7 @@ void CNpc::IsNoPathFind(float fDistance)
 		count++;
 	}
 
-	if (count <= 0 || count > MAX_PATH_LINE)
+	if (count <= 0 || count >= MAX_PATH_LINE)
 	{
 		ClearPathFindData();
 		spdlog::error(

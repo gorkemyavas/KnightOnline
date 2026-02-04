@@ -1133,7 +1133,7 @@ bool EbenezerApp::ProcessCommandLineArgs(const argparse::ArgumentParser& parser)
 
 std::filesystem::path EbenezerApp::ConfigPath() const
 {
-	return "gameserver.ini";
+	return "Ebenezer.ini";
 }
 
 bool EbenezerApp::LoadConfig(CIni& iniFile)

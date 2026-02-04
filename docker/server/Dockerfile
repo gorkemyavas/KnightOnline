@@ -79,6 +79,11 @@ COPY --from=builder /build/build/bin/Release/VersionManager /app/bin/VersionMana
 COPY --from=builder /build/build/bin/MAP /app/bin/MAP
 COPY --from=builder /build/build/bin/QUESTS /app/bin/QUESTS
 
+# Create symlinks so servers can find MAP and QUESTS using relative paths (../MAP, ../QUESTS)
+# Working directory is /app/bin, servers expect ../MAP and ../QUESTS
+RUN ln -s /app/bin/MAP /app/MAP && \
+    ln -s /app/bin/QUESTS /app/QUESTS
+
 # Copy configuration templates
 COPY docker/server/*.ini /app/config/
 

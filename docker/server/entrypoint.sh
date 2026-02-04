@@ -23,16 +23,22 @@ if [ ! -f "${BIN_DIR}/${CONFIG_FILE}" ]; then
 fi
 
 # Update ODBC configuration with environment variables if set
-if [ ! -z "${GAME_DB_NAME}" ]; then
-    sed -i "s/GAME_DSN=.*/GAME_DSN=${GAME_DB_NAME}/" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null || true
-fi
-
-if [ ! -z "${GAME_DB_USER}" ]; then
-    sed -i "s/GAME_UID=.*/GAME_UID=${GAME_DB_USER}/" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null || true
-fi
-
-if [ ! -z "${GAME_DB_PASS}" ]; then
-    sed -i "s/GAME_PWD=.*/GAME_PWD=${GAME_DB_PASS}/" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null || true
+if [ ! -z "${GAME_DB_NAME}" ] || [ ! -z "${GAME_DB_USER}" ] || [ ! -z "${GAME_DB_PASS}" ]; then
+    echo "Updating ODBC configuration..."
+    if [ ! -z "${GAME_DB_NAME}" ]; then
+        echo "  Database: ${GAME_DB_NAME}"
+        sed -i "s/GAME_DSN=.*/GAME_DSN=${GAME_DB_NAME}/" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null || true
+    fi
+    
+    if [ ! -z "${GAME_DB_USER}" ]; then
+        echo "  User: ${GAME_DB_USER}"
+        sed -i "s/GAME_UID=.*/GAME_UID=${GAME_DB_USER}/" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null || true
+    fi
+    
+    if [ ! -z "${GAME_DB_PASS}" ]; then
+        echo "  Password: ***"
+        sed -i "s/GAME_PWD=.*/GAME_PWD=${GAME_DB_PASS}/" "${BIN_DIR}/${CONFIG_FILE}" 2>/dev/null || true
+    fi
 fi
 
 # Update AI_SERVER IP configuration (for Ebenezer)

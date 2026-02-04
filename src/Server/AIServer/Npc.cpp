@@ -2628,6 +2628,15 @@ bool CNpc::StepMove(int /*nStep*/)
 	if (m_NpcState != NPC_MOVING && m_NpcState != NPC_TRACING && m_NpcState != NPC_BACK)
 		return false;
 
+	// Validate that we have valid path data before attempting to move
+	if (m_iAniFrameIndex <= 0)
+	{
+		spdlog::error("Npc::StepMove: no valid path data [serial={} npcId={} npcName={} "
+					  "frameIndex={}]",
+			m_sNid + NPC_BAND, m_sSid, m_strName, m_iAniFrameIndex);
+		return false;
+	}
+
 	__Vector3 vStart {}, vEnd {}, vDis {};
 	float fDis = 0.0f, fOldCurX = 0.0f, fOldCurZ = 0.0f;
 
@@ -5864,7 +5873,7 @@ bool CNpc::IsPathFindCheck(float fDistance)
 		count++;
 	}
 
-	m_iAniFrameIndex = count;
+	m_iAniFrameIndex = count - 1;
 
 	if (nError == -1)
 		return false;
@@ -5946,7 +5955,7 @@ void CNpc::IsNoPathFind(float fDistance)
 		count++;
 	}
 
-	if (count <= 0 || count >= MAX_PATH_LINE)
+	if (count <= 0 || count > MAX_PATH_LINE)
 	{
 		ClearPathFindData();
 		spdlog::error(
@@ -5955,7 +5964,7 @@ void CNpc::IsNoPathFind(float fDistance)
 		return;
 	}
 
-	m_iAniFrameIndex = count;
+	m_iAniFrameIndex = count - 1;
 }
 
 //	NPC 가 가진 아이템을 떨군다.

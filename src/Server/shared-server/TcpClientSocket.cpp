@@ -80,15 +80,41 @@ bool TcpClientSocket::Connect(const char* remoteAddress, uint16_t remotePort)
 		return false;
 	}
 
+	// Try to parse as an IP address first
 	asio::ip::address ip = asio::ip::make_address(remoteAddress, ec);
+	asio::ip::tcp::endpoint endpoint;
+
 	if (ec)
 	{
-		spdlog::error("TcpClientSocket({})::Connect: invalid address {}: {} [socketId={}]",
-			GetImplName(), remoteAddress, ec.message(), GetSocketID());
-		return false;
-	}
+		// Not an IP address, try to resolve as hostname
+		ec.clear();
+		asio::ip::tcp::resolver resolver(*_socketManager->GetWorkerPool());
+		asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(remoteAddress,
+			std::to_string(remotePort), ec);
+		
+		if (ec)
+		{
+			spdlog::error("TcpClientSocket({})::Connect: failed to resolve hostname {}: {} [socketId={}]",
+				GetImplName(), remoteAddress, ec.message(), GetSocketID());
+			return false;
+		}
 
-	asio::ip::tcp::endpoint endpoint(ip, remotePort);
+		if (endpoints.empty())
+		{
+			spdlog::error("TcpClientSocket({})::Connect: no addresses found for hostname {} [socketId={}]",
+				GetImplName(), remoteAddress, GetSocketID());
+			return false;
+		}
+
+		// Use the first resolved endpoint
+		endpoint = *endpoints.begin();
+		ip = endpoint.address();
+	}
+	else
+	{
+		// Successfully parsed as IP address
+		endpoint = asio::ip::tcp::endpoint(ip, remotePort);
+	}
 
 	_socket->connect(endpoint, ec);
 	if (ec)

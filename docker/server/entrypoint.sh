@@ -41,6 +41,23 @@ if [ ! -z "${GAME_DB_NAME}" ] || [ ! -z "${GAME_DB_USER}" ] || [ ! -z "${GAME_DB
     fi
 fi
 
+# Copy Notice.txt if it doesn't exist (for Ebenezer)
+if [ "${SERVER_NAME}" = "Ebenezer" ]; then
+    if [ ! -f "${BIN_DIR}/Notice.txt" ]; then
+        if [ -f "${CONFIG_DIR}/Notice.txt" ]; then
+            echo "Copying Notice.txt from template..."
+            cp "${CONFIG_DIR}/Notice.txt" "${BIN_DIR}/Notice.txt"
+        else
+            echo "Creating default Notice.txt..."
+            cat > "${BIN_DIR}/Notice.txt" << 'EOF'
+Welcome to Knight Online!
+This is an open source implementation for educational purposes.
+For more information, visit: https://github.com/Open-KO/KnightOnline
+EOF
+        fi
+    fi
+fi
+
 # Update AI_SERVER IP configuration (for Ebenezer)
 # Default to 'aiserver' hostname for Docker networking
 # This runs EVERY startup to ensure config is correct, even if volume persists

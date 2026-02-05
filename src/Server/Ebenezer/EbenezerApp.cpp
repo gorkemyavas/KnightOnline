@@ -465,6 +465,9 @@ bool EbenezerApp::OnStart()
 	if (!AIServerConnect())
 	{
 		spdlog::error("EbenezerApp::OnInitDialog: failed to connect to the AIServer");
+		spdlog::error("EbenezerApp::OnInitDialog: AIServer is required for server operation");
+		spdlog::error("EbenezerApp::OnInitDialog: Please start AIServer first or check network "
+					  "connectivity");
 #ifndef _DEBUG
 		return false;
 #endif
@@ -582,6 +585,9 @@ bool EbenezerApp::AISocketConnect(int zone, bool flag)
 		spdlog::error(
 			"EbenezerApp::AISocketConnect: Failed to connect to AI server (zone {}) ({}:{})", zone,
 			m_AIServerIP, port);
+		spdlog::error("EbenezerApp::AISocketConnect: Make sure AIServer is running and accessible");
+		spdlog::error(
+			"EbenezerApp::AISocketConnect: Check [AI_SERVER] IP setting in configuration file");
 
 		return false;
 	}
@@ -2021,6 +2027,9 @@ bool EbenezerApp::LoadNoticeData()
 	if (!file)
 	{
 		spdlog::warn("EbenezerApp::LoadNoticeData: failed to open Notice.txt");
+		spdlog::warn("EbenezerApp::LoadNoticeData: No server notices will be displayed to players");
+		spdlog::info("EbenezerApp::LoadNoticeData: Create Notice.txt file to add server notices (up "
+					 "to 20 lines)");
 		return false;
 	}
 

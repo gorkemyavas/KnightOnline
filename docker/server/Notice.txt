@@ -1,0 +1,3 @@
+Welcome to Knight Online!
+This is an open source implementation for educational purposes.
+For more information, visit: https://github.com/Open-KO/KnightOnline
